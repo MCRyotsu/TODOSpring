@@ -19,12 +19,9 @@ public class Group implements Serializable{
     public Group() {
     }
 
-    public Group(Long id, Date dateCreated, String name) { //es passa un array list de users
-        this.userId=userId;
-        this.dateCreated=dateCreated;
+    public Group(String name, String description) { //es passa un array list de users
         this.name=name;
-        /**this.user = u ;
-        this.id = id;*/
+        this.description=description;
     }
 
     @Id
@@ -32,11 +29,13 @@ public class Group implements Serializable{
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    @JoinColumn(name="fk_owner")
+    private User owner;
 
-    private Long userId;
+    @Column(name = "fk_owner", insertable = false, updatable = false)
+    private Long ownerId;
 
-    private Date dateCreated;
+    private String description;
 
     private String name;
 
@@ -45,17 +44,27 @@ public class Group implements Serializable{
         return id;
     }
 
+    @JsonView(Views.Private.class)
+    public String getName() {
+        return name;
+    }
+
+    @JsonView(Views.Public.class)
+    public String getDescription() {
+        return description;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     @JsonIgnore
     public User getUser() {
-        return user;
+        return owner;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.owner = user;
     }
 
 }

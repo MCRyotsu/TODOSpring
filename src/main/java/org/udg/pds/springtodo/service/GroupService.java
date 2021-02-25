@@ -39,11 +39,11 @@ public class GroupService {
     }
 
     @Transactional
-    public IdObject addGroup(Long userId, Date dateCreated, String name) {
+    public IdObject addGroup(Long ownerId, String name, String description) {
         try {
-            User user = userService.getUser(userId);
+            User user = userService.getUser(ownerId);
 
-            Group group = new Group(userId,dateCreated,name);
+            Group group = new Group(name,description);
 
             group.setUser(user);
 

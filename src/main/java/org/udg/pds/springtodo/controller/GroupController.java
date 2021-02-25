@@ -44,9 +44,9 @@ public class GroupController extends BaseController {
 
     @PostMapping(consumes = "application/json")
     public IdObject addGroup(HttpSession session, @Valid @RequestBody R_Group group) {
-        Long userId = getLoggedUser(session);
+        Long ownerId = getLoggedUser(session);
 
-        return groupService.addGroup(group.userId,group.dateCreated,group.name);
+        return groupService.addGroup(ownerId,group.name,group.description);
     }
 
     @DeleteMapping(path="/{id}")
@@ -63,11 +63,7 @@ public class GroupController extends BaseController {
         public String name;
 
         @NotNull
-        public Long userId;
-
-        @NotNull
-        @JsonDeserialize(using=JsonDateDeserializer.class)
-        public Date dateCreated;
+        public String description;
 
     }
 

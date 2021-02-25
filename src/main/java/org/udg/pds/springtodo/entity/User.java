@@ -44,8 +44,8 @@ public class User implements Serializable {
   private Collection<Task> tasks;
 
   /**------------------------------------------------------*/
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "usergroup")
-  private Collection<Group> groups;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+  private Collection<Group> owner_groups;
   /**------------------------------------------------------*/
 
   @JsonView(Views.Private.class)
@@ -81,18 +81,18 @@ public class User implements Serializable {
     return tasks;
   }
 
-    @JsonView(Views.Complete.class)
-    public Collection<Group> getGroups() {
-        groups.size();
-        return groups;
-    }
+  @JsonView(Views.Complete.class)
+  public Collection<Group> getGroups() {
+      owner_groups.size();
+      return owner_groups;
+  }
 
   public void addTask(Task task) {
     tasks.add(task);
   }
 
   public void addGroup(Group group){
-    groups.add(group);
+    owner_groups.add(group);
   }
 
 
