@@ -32,6 +32,11 @@ public class Group implements Serializable{
     @JoinColumn(name="fk_owner")
     private User owner;
 
+    /**----------------------------------*/
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Collection<User> members = new ArrayList<>();
+    /**----------------------------------*/
+
     @Column(name = "fk_owner", insertable = false, updatable = false)
     private Long ownerId;
 
@@ -65,6 +70,14 @@ public class Group implements Serializable{
 
     public void setUser(User user) {
         this.owner = user;
+    }
+
+    public void addUser(User user) { members.add(user); }
+
+    @JsonView(Views.Complete.class)
+    public Collection<User> getMembers() {
+        members.size();
+        return members;
     }
 
 }

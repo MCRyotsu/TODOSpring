@@ -92,6 +92,18 @@ public class UserController extends BaseController {
     return BaseController.OK_MESSAGE;
   }
 
+  /**--------------------------------------
+  @PostMapping(consumes = "application/json")
+  public String addUserToGroup(@Valid @RequestBody groupID id, HttpSession session) {
+
+      Long userId = getLoggedUser(session);
+
+      userService.addMember(userId,id.ID());
+      //tagService.addTag(tag.name, tag.description);
+      return BaseController.OK_MESSAGE;
+  }
+  /**--------------------------------------*/
+
 
   static class LoginUser {
     @NotNull
@@ -116,5 +128,14 @@ public class UserController extends BaseController {
       this.id = id;
     }
   }
+
+  /**----------------------------
+  static class groupID{
+      public Long id;
+      public ID(Long id) {
+          this.id = id;
+      }
+  }
+  /**----------------------------*/
 
 }

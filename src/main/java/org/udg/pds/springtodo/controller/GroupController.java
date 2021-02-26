@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.controller.exceptions.ControllerException;
 import org.udg.pds.springtodo.entity.IdObject;
+import org.udg.pds.springtodo.entity.Tag;
 import org.udg.pds.springtodo.entity.Views;
 import org.udg.pds.springtodo.entity.Group;
+import org.udg.pds.springtodo.entity.User;
 import org.udg.pds.springtodo.serializer.JsonDateDeserializer;
 import org.udg.pds.springtodo.service.GroupService;
 
@@ -30,7 +32,7 @@ public class GroupController extends BaseController {
                         @PathVariable("id") Long id) {
         Long userId = getLoggedUser(session);
 
-        return groupService.getGroup(userId, id);
+        return groupService.getGroupAsMember(userId, id);
     }
 
     @GetMapping
@@ -57,6 +59,45 @@ public class GroupController extends BaseController {
         return BaseController.OK_MESSAGE;
     }
 
+    /**----------------------------------
+    @PostMapping(path="/{id}/members")
+    public String addMembers(@RequestBody Collection<Long> members, HttpSession session,
+                          @PathVariable("id") Long groupId) {
+
+        Long userId = getLoggedUser(session);
+        groupService.addUsersToGroup(userId, groupId, members);
+        return BaseController.OK_MESSAGE;
+    }
+    /**----------------------------------
+    @PostMapping(path="/{id}/members")
+    public String addMember(@RequestBody GroupID id, HttpSession session) {
+
+        Long userId = getLoggedUser(session);
+        //groupService.addUsersToGroup(userId, groupId, members);
+        groupService.addUserToGroup(userId, id.id);
+        return BaseController.OK_MESSAGE;
+    }
+    /**----------------------------------*/
+
+    @PostMapping(path="/{id}/join")
+    public String addMember(@PathVariable("id") Long groupId, HttpSession session) {
+        Long userId = getLoggedUser(session);
+        //groupService.addUsersToGroup(userId, groupId, members);
+        groupService.addUserToGroup(userId, groupId);
+        return BaseController.OK_MESSAGE;
+    }
+
+    @GetMapping(path="/{id}/members")
+    public Collection<User> getGroupMembers(HttpSession session,
+                                       @PathVariable("id") Long groupId) {
+
+        Long userId = getLoggedUser(session);
+        return groupService.getGroupMembers(userId, groupId);
+    }
+
+    /**----------------------------------*/
+
+
     static class R_Group {
 
         @NotNull
@@ -65,6 +106,11 @@ public class GroupController extends BaseController {
         @NotNull
         public String description;
 
+    }
+
+    static class GroupID{
+        @NotNull
+        public Long id;
     }
 
 }
